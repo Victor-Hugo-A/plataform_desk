@@ -1,0 +1,12 @@
+<header class="topbar">
+  <div class="user-box">
+    <div class="user-avatar">{{ initials }}</div>
+
+    <div class="user-copy">
+      <span>{{ user?.name || 'Usuario demo' }}</span>
+      <small>{{ user?.role || 'ADMIN' }}</small>
+    </div>
+
+    <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</header>

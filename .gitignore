@@ -32,6 +32,16 @@ build/
 ### VS Code ###
 .vscode/
 
-### POSTMAN ###
-.postman
-postman
+# Node / Angular
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+application-local.yml

@@ -1,0 +1,58 @@
+.sidebar {
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background:
+    radial-gradient(circle at top right, rgba(96, 165, 250, 0.18), transparent 28%),
+    linear-gradient(180deg, #0f2f73, #082052 62%, #06173c);
+  color: white;
+  padding: 30px 22px;
+  border-right: 1px solid rgba(191, 219, 254, 0.12);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 34px;
+
+  strong {
+    font-size: 1.6rem;
+    letter-spacing: -0.04em;
+  }
+
+  span {
+    font-size: 0.82rem;
+    color: #bfdbfe;
+    max-width: 18ch;
+    line-height: 1.5;
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  a {
+    text-decoration: none;
+    color: #dbeafe;
+    padding: 13px 14px;
+    border-radius: 16px;
+    font-weight: 700;
+    border: 1px solid transparent;
+  }
+
+  a.active,
+  a:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: rgba(191, 219, 254, 0.18);
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+}

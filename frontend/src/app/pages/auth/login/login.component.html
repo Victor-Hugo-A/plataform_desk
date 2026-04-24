@@ -1,0 +1,48 @@
+<main class="login-page">
+  <section class="login-hero">
+    <div class="hero-photo">
+      <img src="/assets/login-hero-photo.png" alt="Ambiente moderno de operacao e atendimento tecnico">
+    </div>
+
+    <div class="hero-overlay">
+      <span class="eyebrow">Service desk</span>
+      <h1>Atendimento técnico com visão clara e operação organizada.</h1>
+      <p>Abra, acompanhe e priorize chamados em um fluxo mais direto.</p>
+
+      <div class="hero-stats">
+        <div>
+          <strong>Alertas claros</strong>
+          <span>Erros e sucessos destacados no topo direito.</span>
+        </div>
+
+        <div>
+          <strong>Operação centralizada</strong>
+          <span>Chamados, categorias e usuários no mesmo painel.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="login-card">
+    <div class="brand">
+      <strong>ServiceFlow</strong>
+      <span>Gestao de chamados tecnicos e SLA</span>
+    </div>
+
+    <form (ngSubmit)="login()">
+      <label>
+        E-mail
+        <input name="email" type="email" [(ngModel)]="email" placeholder="victor@email.com" required>
+      </label>
+
+      <label>
+        Senha
+        <input name="password" type="password" [(ngModel)]="password" placeholder="Digite sua senha" required>
+      </label>
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Entrando...' : 'Entrar no sistema' }}
+      </button>
+    </form>
+  </section>
+</main>

@@ -1,0 +1,78 @@
+<section class="page-header">
+  <div>
+    <span class="eyebrow">Organizacao</span>
+    <h2>Categorias</h2>
+    <p>Centralize a organizacao dos chamados com categorias padronizadas e bem descritas.</p>
+  </div>
+</section>
+
+<section class="grid" [class.single-column]="!isAdmin">
+  @if (isAdmin) {
+  <article class="card form-card">
+    <h3>Nova categoria</h3>
+    <p class="section-copy">
+      Crie categorias objetivas para facilitar o filtro, o SLA e a abertura de novos chamados.
+    </p>
+
+    <form (ngSubmit)="createCategory()">
+      <label>
+        Nome
+        <input name="name" [(ngModel)]="name" placeholder="Ex: Acesso a sistemas" required>
+      </label>
+
+      <label>
+        Descricao
+        <textarea name="description" [(ngModel)]="description" rows="4" placeholder="Descricao da categoria"></textarea>
+      </label>
+
+      <button type="submit">Cadastrar categoria</button>
+    </form>
+  </article>
+  } @else {
+  <article class="card access-card">
+    <h3>Acesso restrito</h3>
+    <p class="section-copy">
+      O cadastro de categorias fica disponivel somente para usuarios com perfil
+      <strong>ADMIN</strong>.
+    </p>
+
+    <div class="access-note">
+      <span>Usuario atual</span>
+      <strong>{{ currentUser?.name || 'Nao identificado' }}</strong>
+      <small>{{ currentUser?.role || 'Sem perfil' }}</small>
+    </div>
+  </article>
+  }
+
+  <article class="card list-card">
+    <div class="card-heading">
+      <div>
+        <h3>Categorias cadastradas</h3>
+        <p class="section-copy">Selecione nomes claros para que a lista de chamados fique mais organizada.</p>
+      </div>
+
+      <span class="counter">{{ categories.length }} categorias</span>
+    </div>
+
+    <div class="list">
+      @if (loading) {
+        <p class="empty">Carregando categorias...</p>
+      }
+
+      @for (category of categories; track category.id) {
+        <div class="item">
+          <div>
+            <strong>{{ category.name }}</strong>
+            <span>{{ category.description || 'Sem descricao informada.' }}</span>
+          </div>
+
+          <span class="status">{{ category.active ? 'Ativa' : 'Inativa' }}</span>
+        </div>
+      } @empty {
+        @if (!loading) {
+          <p class="empty">Nenhuma categoria cadastrada.</p>
+        }
+      }
+    </div>
+  </article>
+</section>

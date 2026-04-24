@@ -1,0 +1,68 @@
+<section class="page-header">
+  <div>
+    <span class="eyebrow">Visao geral</span>
+    <h2>Dashboard operacional</h2>
+    <p>Resumo dos chamados cadastrados na API Spring Boot.</p>
+  </div>
+
+  <a routerLink="/tickets/new" class="primary-btn">+ Novo chamado</a>
+</section>
+
+<section class="cards">
+  <article class="card">
+    <span>Total de chamados</span>
+    <strong>{{ totalTickets }}</strong>
+  </article>
+
+  <article class="card">
+    <span>Abertos</span>
+    <strong>{{ openTickets }}</strong>
+  </article>
+
+  <article class="card">
+    <span>Em atendimento</span>
+    <strong>{{ inProgressTickets }}</strong>
+  </article>
+
+  <article class="card">
+    <span>Resolvidos</span>
+    <strong>{{ resolvedTickets }}</strong>
+  </article>
+</section>
+
+<section class="card table-card">
+  <div class="section-title">
+    <h3>Chamados recentes</h3>
+    <a routerLink="/tickets">Ver todos</a>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Protocolo</th>
+          <th>Titulo</th>
+          <th>Categoria</th>
+          <th>Status</th>
+          <th>Prioridade</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (ticket of tickets.slice(0, 5); track ticket.id) {
+          <tr>
+            <td>{{ ticket.protocol }}</td>
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.categoryName }}</td>
+            <td><span class="badge">{{ ticket.status }}</span></td>
+            <td><span class="badge priority">{{ ticket.priority }}</span></td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="empty">Nenhum chamado cadastrado ainda.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

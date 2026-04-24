@@ -1,0 +1,37 @@
+<section class="page-header">
+  <div>
+    <span class="eyebrow">Equipe</span>
+    <h2>Usuarios</h2>
+    <p>Consulta dos usuarios cadastrados pelo back-end.</p>
+  </div>
+</section>
+
+<section class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Perfil</th>
+        <th>Departamento</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (user of users; track user.id) {
+        <tr>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.department }}</td>
+          <td>{{ user.active ? 'Ativo' : 'Inativo' }}</td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="5" class="empty">Nenhum usuario cadastrado.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</section>

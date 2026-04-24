@@ -1,0 +1,45 @@
+﻿<a routerLink="/tickets" class="back-link">← Voltar para chamados</a>
+
+@if (ticket) {
+  <section class="card">
+    <div class="header">
+      <div>
+        <span>{{ ticket.protocol }}</span>
+        <h2>{{ ticket.title }}</h2>
+      </div>
+
+      <div class="badges">
+        <span class="badge">{{ ticket.status }}</span>
+        <span class="badge priority">{{ ticket.priority }}</span>
+      </div>
+    </div>
+
+    <p class="description">{{ ticket.description }}</p>
+
+    <div class="info-grid">
+      <div>
+        <small>Categoria</small>
+        <strong>{{ ticket.categoryName }}</strong>
+      </div>
+
+      <div>
+        <small>Solicitante</small>
+        <strong>{{ ticket.requesterName }}</strong>
+      </div>
+
+      <div>
+        <small>Técnico responsável</small>
+        <strong>{{ ticket.assignedTechnicianName || 'Não atribuído' }}</strong>
+      </div>
+
+      <div>
+        <small>SLA</small>
+        <strong>{{ ticket.slaDeadline }}</strong>
+      </div>
+    </div>
+  </section>
+} @else {
+  <section class="card">
+    <p>Carregando chamado...</p>
+  </section>
+}

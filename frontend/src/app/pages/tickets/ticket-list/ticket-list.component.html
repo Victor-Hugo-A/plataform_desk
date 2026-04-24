@@ -1,0 +1,63 @@
+<section class="page-header">
+  <div>
+    <span class="eyebrow">Painel operacional</span>
+    <h2>Chamados</h2>
+    <p>Visualize os registros mais recentes e acompanhe o status de cada solicitacao.</p>
+  </div>
+
+  <a routerLink="/tickets/new" class="primary-btn">+ Novo chamado</a>
+</section>
+
+<section class="overview-grid">
+  <article class="metric-card">
+    <span>Total</span>
+    <strong>{{ tickets.length }}</strong>
+    <small>Chamados carregados na listagem atual.</small>
+  </article>
+
+  <article class="metric-card subtle">
+    <span>Situacao</span>
+    <strong>{{ loading ? 'Atualizando' : 'Pronto' }}</strong>
+    <small>{{ loading ? 'Buscando dados do back-end.' : 'Lista sincronizada com o sistema.' }}</small>
+  </article>
+</section>
+
+<section class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Protocolo</th>
+        <th>Titulo</th>
+        <th>Categoria</th>
+        <th>Solicitante</th>
+        <th>Status</th>
+        <th>Prioridade</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @if (loading) {
+        <tr>
+          <td colspan="6" class="empty">Carregando chamados...</td>
+        </tr>
+      }
+
+      @for (ticket of tickets; track ticket.id) {
+        <tr [routerLink]="['/tickets', ticket.id]">
+          <td>{{ ticket.protocol }}</td>
+          <td>{{ ticket.title }}</td>
+          <td>{{ ticket.categoryName }}</td>
+          <td>{{ ticket.requesterName }}</td>
+          <td><span class="badge">{{ ticket.status }}</span></td>
+          <td><span class="badge priority">{{ ticket.priority }}</span></td>
+        </tr>
+      } @empty {
+        @if (!loading) {
+          <tr>
+            <td colspan="6" class="empty">Nenhum chamado cadastrado.</td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</section>

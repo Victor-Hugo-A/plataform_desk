@@ -1,0 +1,100 @@
+<section class="page-header">
+  <div>
+    <span class="eyebrow">Abertura de chamado</span>
+    <h2>Novo chamado</h2>
+    <p>Registre uma solicitacao tecnica com categoria, prioridade e contexto bem definidos.</p>
+  </div>
+</section>
+
+<section class="ticket-layout">
+  <article class="card form-card">
+    <div class="card-header">
+      <div>
+        <h3>Detalhes da solicitacao</h3>
+        <p>Preencha os campos abaixo para abrir um chamado mais completo e facil de atender.</p>
+      </div>
+    </div>
+
+    @if (categories.length === 0 && !loadingCategories) {
+      <div class="inline-state warning">
+        <div>
+          <strong>Nenhuma categoria disponivel.</strong>
+          <p>Cadastre uma categoria antes de criar o chamado.</p>
+        </div>
+
+        <a routerLink="/categories" class="secondary-btn">Ir para categorias</a>
+      </div>
+    }
+
+    <form (ngSubmit)="createTicket()">
+      <label>
+        Titulo
+        <input name="title" [(ngModel)]="title" placeholder="Ex: Solicitação de acesso ao sistema" required>
+      </label>
+
+      <label>
+        Descricao
+        <textarea name="description" [(ngModel)]="description" rows="6" placeholder="Descreva a solicitacao, impacto e urgencia..." required></textarea>
+      </label>
+
+      <div class="form-grid">
+        <label>
+          Categoria
+          <select name="categoryId" [(ngModel)]="categoryId" required [disabled]="loadingCategories || categories.length === 0">
+            <option [ngValue]="null">
+              {{ loadingCategories ? 'Carregando categorias...' : 'Selecione uma categoria' }}
+            </option>
+            @for (category of categories; track category.id) {
+              <option [ngValue]="category.id">{{ category.name }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Prioridade
+          <select name="priority" [(ngModel)]="priority">
+            <option value="LOW">Baixa</option>
+            <option value="MEDIUM">Media</option>
+            <option value="HIGH">Alta</option>
+            <option value="CRITICAL">Critica</option>
+          </select>
+        </label>
+      </div>
+
+      <button type="submit" [disabled]="saving || loadingCategories || categories.length === 0">
+        {{ saving ? 'Criando chamado...' : 'Criar chamado' }}
+      </button>
+    </form>
+  </article>
+
+  <aside class="card side-card">
+    <div class="summary">
+      <span class="eyebrow soft">Solicitante</span>
+      <strong>{{ currentUser?.name || 'Usuario nao identificado' }}</strong>
+      <small>{{ currentUser?.email || 'Faca login novamente para continuar.' }}</small>
+    </div>
+
+    <div class="summary">
+      <span class="eyebrow soft">Boas praticas</span>
+      <ul>
+        <li>Use um titulo curto e direto.</li>
+        <li>Explique o impacto e o contexto na descricao.</li>
+        <li>Escolha a categoria correta para facilitar o atendimento.</li>
+      </ul>
+    </div>
+
+    <div class="summary highlight">
+      <span class="eyebrow soft">Categorias</span>
+      <strong>{{ categories.length }} disponiveis</strong>
+      <small>
+        @if (loadingCategories) {
+          Carregando categorias do sistema...
+        } @else if (categories.length === 0) {
+          Nenhuma categoria cadastrada no momento.
+        } @else {
+          Selecione a opcao que melhor representa a solicitacao.
+        }
+      </small>
+    </div>
+  </aside>
+</section>

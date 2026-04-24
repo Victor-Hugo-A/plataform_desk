@@ -1,0 +1,80 @@
+﻿.back-link {
+  display: inline-block;
+  margin-bottom: 18px;
+  color: #1d4ed8;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  span {
+    color: #64748b;
+    font-weight: 900;
+  }
+
+  h2 {
+    margin-top: 6px;
+    color: #0f172a;
+  }
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 800;
+  font-size: 0.76rem;
+}
+
+.priority {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.description {
+  margin: 22px 0;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+
+  div {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  small {
+    display: block;
+    color: #64748b;
+    margin-bottom: 5px;
+  }
+
+  strong {
+    color: #0f172a;
+  }
+}
