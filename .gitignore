@@ -45,3 +45,12 @@ frontend/.angular/
 .env
 .env.local
 application-local.yml
+
+run-backend.ps1
+run-frontend.ps1
+setup-env.ps1
+create-account.ps1
+
+# H2 Database files
+data/
+*.db
