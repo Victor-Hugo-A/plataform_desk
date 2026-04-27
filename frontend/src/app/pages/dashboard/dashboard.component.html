@@ -2,37 +2,185 @@
   <div>
     <span class="eyebrow">Visao geral</span>
     <h2>Dashboard operacional</h2>
-    <p>Resumo dos chamados cadastrados na API Spring Boot.</p>
+    <p>Acompanhe volume, prioridade, gargalos e riscos de SLA em uma única visão.</p>
   </div>
 
   <a routerLink="/tickets/new" class="primary-btn">+ Novo chamado</a>
 </section>
 
-<section class="cards">
-  <article class="card">
-    <span>Total de chamados</span>
+<section class="hero-grid">
+  <article class="hero-card primary">
+    <span>Pulso da operação</span>
     <strong>{{ totalTickets }}</strong>
+    <p>Total de chamados monitorados neste momento.</p>
   </article>
 
-  <article class="card">
-    <span>Abertos</span>
-    <strong>{{ openTickets }}</strong>
+  <article class="hero-card highlight">
+    <span>Urgência alta</span>
+    <strong>{{ urgentTickets }}</strong>
+    <p>Chamados com prioridade alta ou crítica exigindo atenção.</p>
   </article>
 
-  <article class="card">
-    <span>Em atendimento</span>
-    <strong>{{ inProgressTickets }}</strong>
-  </article>
-
-  <article class="card">
-    <span>Resolvidos</span>
-    <strong>{{ resolvedTickets }}</strong>
+  <article class="hero-card warning">
+    <span>SLA em risco</span>
+    <strong>{{ overdueTickets }}</strong>
+    <p>Itens já vencidos ou pressionando o prazo operacional.</p>
   </article>
 </section>
 
-<section class="card table-card">
+<section class="cards">
+  <article class="metric-card">
+    <span>Total de chamados</span>
+    <strong>{{ totalTickets }}</strong>
+    <small>Base ativa de acompanhamento.</small>
+  </article>
+
+  <article class="metric-card">
+    <span>Abertos</span>
+    <strong>{{ openTickets }}</strong>
+    <small>Entradas aguardando triagem.</small>
+  </article>
+
+  <article class="metric-card">
+    <span>Em atendimento</span>
+    <strong>{{ inProgressTickets }}</strong>
+    <small>Demandas em execução técnica.</small>
+  </article>
+
+  <article class="metric-card">
+    <span>Resolvidos</span>
+    <strong>{{ resolvedTickets }}</strong>
+    <small>Chamados concluídos com sucesso.</small>
+  </article>
+</section>
+
+<section class="analytics-grid">
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <span class="panel-kicker">Status</span>
+        <h3>Distribuição operacional</h3>
+      </div>
+    </div>
+
+    <div class="status-chart">
+      @for (metric of statusMetrics; track metric.status) {
+        <div class="status-row">
+          <div class="status-copy">
+            <span class="label">{{ metric.label }}</span>
+            <strong>{{ metric.count }}</strong>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" [attr.data-status]="metric.status" [style.width.%]="metric.percentage"></div>
+          </div>
+          <span class="percentage">{{ metric.percentage }}%</span>
+        </div>
+      }
+    </div>
+  </article>
+
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <span class="panel-kicker">Prioridades</span>
+        <h3>Mix de criticidade</h3>
+      </div>
+    </div>
+
+    <div class="priority-layout">
+      <div class="donut-card">
+        <div class="donut-chart" [ngStyle]="priorityDonutStyle">
+          <div class="donut-hole">
+            <strong>{{ totalTickets }}</strong>
+            <span>Chamados</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="priority-legend">
+        @for (metric of priorityMetrics; track metric.priority) {
+          <div class="legend-row">
+            <div class="legend-copy">
+              <span class="swatch" [style.background]="metric.color"></span>
+              <span>{{ metric.label }}</span>
+            </div>
+            <div class="legend-values">
+              <strong>{{ metric.count }}</strong>
+              <small>{{ metric.percentage }}%</small>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </article>
+</section>
+
+<section class="analytics-grid secondary">
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <span class="panel-kicker">Categorias</span>
+        <h3>Maiores fontes de demanda</h3>
+      </div>
+    </div>
+
+    @if (categoryMetrics.length > 0) {
+      <div class="category-chart">
+        @for (metric of categoryMetrics; track metric.categoryName) {
+          <div class="category-row">
+            <div class="category-copy">
+              <strong>{{ metric.categoryName }}</strong>
+              <small>{{ metric.count }} chamados</small>
+            </div>
+            <div class="bar-track large">
+              <div class="bar-fill category" [style.width.%]="metric.percentage"></div>
+            </div>
+            <span class="percentage">{{ metric.percentage }}%</span>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="empty-state">Ainda não há categorias com chamados suficientes para análise.</p>
+    }
+  </article>
+
+  <article class="panel">
+    <div class="panel-head">
+      <div>
+        <span class="panel-kicker">Alertas</span>
+        <h3>SLA e próximos vencimentos</h3>
+      </div>
+    </div>
+
+    @if (slaAlerts.length > 0) {
+      <div class="alert-list">
+        @for (ticket of slaAlerts; track ticket.id) {
+          <a class="alert-card" [routerLink]="['/tickets', ticket.id]">
+            <div>
+              <strong>{{ ticket.protocol }}</strong>
+              <p>{{ ticket.title }}</p>
+            </div>
+            <div class="alert-meta">
+              <span class="deadline" [class.overdue]="isOverdue(ticket.slaDeadline)">
+                {{ isOverdue(ticket.slaDeadline) ? 'SLA vencido' : 'Prazo próximo' }}
+              </span>
+              <small>{{ formatDeadline(ticket.slaDeadline) }}</small>
+            </div>
+          </a>
+        }
+      </div>
+    } @else {
+      <p class="empty-state">Nenhum chamado com SLA vencido ou prestes a vencer.</p>
+    }
+  </article>
+</section>
+
+<section class="panel table-panel">
   <div class="section-title">
-    <h3>Chamados recentes</h3>
+    <div>
+      <span class="panel-kicker">Monitoramento</span>
+      <h3>Chamados recentes</h3>
+    </div>
     <a routerLink="/tickets">Ver todos</a>
   </div>
 
@@ -49,13 +197,13 @@
       </thead>
 
       <tbody>
-        @for (ticket of tickets.slice(0, 5); track ticket.id) {
+        @for (ticket of recentTickets; track ticket.id) {
           <tr>
             <td>{{ ticket.protocol }}</td>
             <td>{{ ticket.title }}</td>
             <td>{{ ticket.categoryName }}</td>
-            <td><span class="badge">{{ ticket.status }}</span></td>
-            <td><span class="badge priority">{{ ticket.priority }}</span></td>
+            <td><span class="badge status" [attr.data-status]="ticket.status">{{ getStatusLabel(ticket.status) }}</span></td>
+            <td><span class="badge priority" [attr.data-priority]="ticket.priority">{{ getPriorityLabel(ticket.priority) }}</span></td>
           </tr>
         } @empty {
           <tr>

@@ -127,9 +127,54 @@ tbody tr:hover {
   font-size: 0.76rem;
 }
 
-.priority {
+.status[data-status='OPEN'] {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.status[data-status='IN_ANALYSIS'] {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.status[data-status='IN_PROGRESS'] {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.status[data-status='WAITING_USER'] {
   background: #fef3c7;
   color: #92400e;
+}
+
+.status[data-status='RESOLVED'] {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status[data-status='CANCELLED'] {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.priority[data-priority='LOW'] {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.priority[data-priority='MEDIUM'] {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.priority[data-priority='HIGH'] {
+  background: #fed7aa;
+  color: #c2410c;
+}
+
+.priority[data-priority='CRITICAL'] {
+  background: #fee2e2;
+  color: #b91c1c;
 }
 
 .empty {

@@ -1,4 +1,10 @@
-﻿export type UserRole = 'USER' | 'TECHNICIAN' | 'ADMIN';
+export type UserRole = 'USER' | 'TECHNICIAN' | 'ADMIN';
+
+export const USER_ROLE_LABELS: Record<UserRole, string> = {
+  USER: 'Usuário',
+  TECHNICIAN: 'Técnico',
+  ADMIN: 'Administrador'
+};
 
 export interface User {
   id: number;

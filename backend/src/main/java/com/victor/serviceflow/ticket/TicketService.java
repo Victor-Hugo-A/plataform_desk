@@ -65,6 +65,19 @@ public class TicketService {
         return toResponse(ticket);
     }
 
+    public TicketResponse updateStatus(Long id, TicketStatus newStatus) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Chamado não encontrado."));
+
+        ticket.setStatus(newStatus);
+        if (newStatus == TicketStatus.RESOLVED) {
+            ticket.setResolvedAt(LocalDateTime.now());
+        }
+
+        Ticket updatedTicket = ticketRepository.save(ticket);
+        return toResponse(updatedTicket);
+    }
+
     private String generateProtocol() {
         long nextNumber = ticketRepository.count() + 1;
         int year = LocalDateTime.now().getYear();

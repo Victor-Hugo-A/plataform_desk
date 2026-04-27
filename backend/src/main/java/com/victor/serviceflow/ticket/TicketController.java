@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tickets")
@@ -31,5 +32,11 @@ public class TicketController {
     @GetMapping("/{id}")
     public TicketResponse findById(@PathVariable Long id) {
         return ticketService.findById(id);
+    }
+
+    @PatchMapping("/{id}/status")
+    public TicketResponse updateStatus(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        String status = request.get("status");
+        return ticketService.updateStatus(id, TicketStatus.valueOf(status));
     }
 }

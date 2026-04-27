@@ -12,6 +12,22 @@ export type TicketPriority =
   | 'HIGH'
   | 'CRITICAL';
 
+export const TICKET_STATUS_LABELS: Record<TicketStatus, string> = {
+  OPEN: 'Aberto',
+  IN_ANALYSIS: 'Em análise',
+  IN_PROGRESS: 'Em progresso',
+  WAITING_USER: 'Aguardando usuário',
+  RESOLVED: 'Resolvido',
+  CANCELLED: 'Cancelado'
+};
+
+export const TICKET_PRIORITY_LABELS: Record<TicketPriority, string> = {
+  LOW: 'Baixa',
+  MEDIUM: 'Média',
+  HIGH: 'Alta',
+  CRITICAL: 'Crítica'
+};
+
 export interface Ticket {
   id: number;
   protocol: string;

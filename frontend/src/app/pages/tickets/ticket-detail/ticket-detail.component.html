@@ -1,4 +1,4 @@
-﻿<a routerLink="/tickets" class="back-link">← Voltar para chamados</a>
+<a routerLink="/tickets" class="back-link">← Voltar para chamados</a>
 
 @if (ticket) {
   <section class="card">
@@ -9,8 +9,14 @@
       </div>
 
       <div class="badges">
-        <span class="badge">{{ ticket.status }}</span>
-        <span class="badge priority">{{ ticket.priority }}</span>
+        <select [(ngModel)]="selectedStatus" (change)="updateStatus()" class="status-select">
+          @for (option of statusOptions; track option.value) {
+            <option [value]="option.value">{{ option.icon }} {{ option.label.toUpperCase() }}</option>
+          }
+        </select>
+        <span class="badge priority" [attr.data-priority]="ticket.priority">
+          {{ getPriorityLabel(ticket.priority) }}
+        </span>
       </div>
     </div>
 
@@ -35,6 +41,72 @@
       <div>
         <small>SLA</small>
         <strong>{{ ticket.slaDeadline }}</strong>
+      </div>
+    </div>
+
+    <div class="history-section">
+      <h3>📜 Histórico</h3>
+      @if (ticketHistory && ticketHistory.length > 0) {
+        <ul class="history-list">
+          @for (item of ticketHistory; track item.id) {
+            <li>
+              <small class="date">{{ item.createdAt | date: 'dd/MM/yyyy HH:mm' }}</small>
+              <strong>{{ item.action }}</strong>
+              <span class="change">{{ item.oldValue }} → {{ item.newValue }}</span>
+              <small class="author">por {{ item.performedByName }}</small>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="no-data">Nenhuma alteração registrada</p>
+      }
+    </div>
+
+    <div class="comments-section">
+      <h3>💬 Comentários</h3>
+      @if (comments && comments.length > 0) {
+        <ul class="comments-list">
+          @for (comment of comments; track comment.id) {
+            <li class="comment">
+              <div class="comment-header">
+                <div class="comment-meta">
+                  <strong>{{ comment.authorName }}</strong>
+                  <small>{{ comment.createdAt | date: 'dd/MM/yyyy HH:mm' }}</small>
+                </div>
+                @if (canManageComment(comment)) {
+                  <div class="comment-actions">
+                    @if (editingCommentId !== comment.id) {
+                      <button type="button" class="btn-link" (click)="startEditingComment(comment)">Editar</button>
+                    }
+                    <button type="button" class="btn-link danger" (click)="deleteComment(comment)">Excluir</button>
+                  </div>
+                }
+              </div>
+              @if (editingCommentId === comment.id) {
+                <div class="comment-editor">
+                  <textarea [(ngModel)]="editedCommentMessage" rows="3"></textarea>
+                  <div class="editor-actions">
+                    <button type="button" class="btn-secondary" (click)="cancelEditingComment()">Cancelar</button>
+                    <button type="button" class="btn-primary small" (click)="saveComment(comment)">Salvar</button>
+                  </div>
+                </div>
+              } @else {
+                <p>{{ comment.message }}</p>
+              }
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="no-data">Nenhum comentário ainda</p>
+      }
+
+      <div class="comment-form">
+        <textarea
+          [(ngModel)]="newComment"
+          placeholder="Adicione um comentário..."
+          rows="3">
+        </textarea>
+        <button (click)="addComment()" class="btn-primary">Enviar</button>
       </div>
     </div>
   </section>

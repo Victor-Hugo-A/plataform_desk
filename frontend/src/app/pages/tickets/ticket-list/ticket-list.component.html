@@ -48,8 +48,12 @@
           <td>{{ ticket.title }}</td>
           <td>{{ ticket.categoryName }}</td>
           <td>{{ ticket.requesterName }}</td>
-          <td><span class="badge">{{ ticket.status }}</span></td>
-          <td><span class="badge priority">{{ ticket.priority }}</span></td>
+          <td>
+            <span class="badge status" [attr.data-status]="ticket.status">{{ getStatusLabel(ticket.status) }}</span>
+          </td>
+          <td>
+            <span class="badge priority" [attr.data-priority]="ticket.priority">{{ getPriorityLabel(ticket.priority) }}</span>
+          </td>
         </tr>
       } @empty {
         @if (!loading) {

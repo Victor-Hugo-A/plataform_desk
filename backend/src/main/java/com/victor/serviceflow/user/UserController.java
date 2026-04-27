@@ -1,6 +1,8 @@
 package com.victor.serviceflow.user;
 
 import com.victor.serviceflow.user.dto.UserResponse;
+import com.victor.serviceflow.user.dto.UserUpdateRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,5 +25,16 @@ public class UserController {
     @GetMapping("/{id}")
     public UserResponse findById(@PathVariable Long id) {
         return userService.findById(id);
+    }
+
+    @PatchMapping("/{id}")
+    public UserResponse update(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
+        return userService.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id, @RequestParam Long actorId) {
+        userService.delete(id, actorId);
     }
 }

@@ -4,7 +4,7 @@
 
     <div class="user-copy">
       <span>{{ user?.name || 'Usuario demo' }}</span>
-      <small>{{ user?.role || 'ADMIN' }}</small>
+      <small>{{ roleLabel }}</small>
     </div>
 
     <button type="button" class="logout-btn" (click)="logout()">Logout</button>

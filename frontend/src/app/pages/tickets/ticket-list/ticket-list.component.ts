@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket.service';
-import { Ticket } from '../../../core/models/ticket.model';
+import {
+  Ticket,
+  TicketPriority,
+  TicketStatus,
+  TICKET_PRIORITY_LABELS,
+  TICKET_STATUS_LABELS
+} from '../../../core/models/ticket.model';
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
@@ -36,5 +42,13 @@ export class TicketListComponent implements OnInit {
         );
       }
     });
+  }
+
+  getStatusLabel(status: TicketStatus): string {
+    return TICKET_STATUS_LABELS[status];
+  }
+
+  getPriorityLabel(priority: TicketPriority): string {
+    return TICKET_PRIORITY_LABELS[priority];
   }
 }

@@ -60,6 +60,63 @@ th {
 td {
   padding: 14px 8px;
   border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font: inherit;
+  background: white;
+}
+
+.actions-cell {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 24px;
+}
+
+.btn-link {
+  background: transparent;
+  border: none;
+  color: #1d4ed8;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0;
+}
+
+.btn-link.danger {
+  color: #dc2626;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-primary {
+  border: none;
+  background: #1d4ed8;
+  color: white;
+}
+
+.btn-secondary {
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #334155;
 }
 
 .empty {

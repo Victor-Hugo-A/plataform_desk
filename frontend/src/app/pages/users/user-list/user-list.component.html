@@ -15,21 +15,76 @@
         <th>Perfil</th>
         <th>Departamento</th>
         <th>Status</th>
+        @if (isAdmin()) {
+          <th>Ações</th>
+        }
       </tr>
     </thead>
 
     <tbody>
       @for (user of users; track user.id) {
         <tr>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.role }}</td>
-          <td>{{ user.department }}</td>
-          <td>{{ user.active ? 'Ativo' : 'Inativo' }}</td>
+          <td>
+            @if (editingUserId === user.id && editModel) {
+              <input [(ngModel)]="editModel.name">
+            } @else {
+              {{ user.name }}
+            }
+          </td>
+          <td>
+            @if (editingUserId === user.id && editModel) {
+              <input [(ngModel)]="editModel.email">
+            } @else {
+              {{ user.email }}
+            }
+          </td>
+          <td>
+            @if (editingUserId === user.id && editModel) {
+              <select [(ngModel)]="editModel.role">
+                <option value="USER">Usuário</option>
+                <option value="TECHNICIAN">Técnico</option>
+                <option value="ADMIN">Administrador</option>
+              </select>
+            } @else {
+              {{ getRoleLabel(user.role) }}
+            }
+          </td>
+          <td>
+            @if (editingUserId === user.id && editModel) {
+              <input [(ngModel)]="editModel.department">
+            } @else {
+              {{ user.department }}
+            }
+          </td>
+          <td>
+            @if (editingUserId === user.id && editModel) {
+              <select [(ngModel)]="editModel.active">
+                <option [ngValue]="true">Ativo</option>
+                <option [ngValue]="false">Inativo</option>
+              </select>
+            } @else {
+              {{ user.active ? 'Ativo' : 'Inativo' }}
+            }
+          </td>
+          @if (isAdmin()) {
+            <td class="actions-cell">
+              @if (editingUserId === user.id) {
+                <div class="actions">
+                  <button type="button" class="btn-secondary" (click)="cancelEditing()">Cancelar</button>
+                  <button type="button" class="btn-primary" (click)="saveUser(user)">Salvar</button>
+                </div>
+              } @else {
+                <div class="actions">
+                  <button type="button" class="btn-link" (click)="startEditing(user)">Editar</button>
+                  <button type="button" class="btn-link danger" (click)="deleteUser(user)">Excluir</button>
+                </div>
+              }
+            </td>
+          }
         </tr>
       } @empty {
         <tr>
-          <td colspan="5" class="empty">Nenhum usuario cadastrado.</td>
+          <td [attr.colspan]="isAdmin() ? 6 : 5" class="empty">Nenhum usuario cadastrado.</td>
         </tr>
       }
     </tbody>

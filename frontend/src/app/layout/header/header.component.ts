@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { LoginResponse } from '../../core/models/user.model';
+import { LoginResponse, USER_ROLE_LABELS } from '../../core/models/user.model';
 import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
@@ -20,7 +20,9 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.authService.getLoggedUser();
+    this.authService.loggedUser$.subscribe((user) => {
+      this.user = user;
+    });
   }
 
   get initials(): string {
@@ -35,6 +37,10 @@ export class HeaderComponent implements OnInit {
       .slice(0, 2)
       .map((part) => part[0]?.toUpperCase() ?? '')
       .join('');
+  }
+
+  get roleLabel(): string {
+    return this.user ? USER_ROLE_LABELS[this.user.role] : 'Administrador';
   }
 
   logout(): void {
