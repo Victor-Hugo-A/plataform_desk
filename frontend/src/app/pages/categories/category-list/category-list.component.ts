@@ -17,6 +17,8 @@ export class CategoryListComponent implements OnInit {
   loading = false;
   currentUser: LoginResponse | null = null;
   isAdmin = false;
+  pendingDeleteCategory: Category | null = null;
+  deletingCategory = false;
 
   name = '';
   description = '';
@@ -61,9 +63,20 @@ export class CategoryListComponent implements OnInit {
       return;
     }
 
+    const normalizedName = this.name.trim();
+    const normalizedDescription = this.description.trim();
+
+    if (!normalizedName) {
+      this.notificationService.error(
+        'Nome obrigatorio',
+        'Informe o nome da categoria antes de cadastrar.'
+      );
+      return;
+    }
+
     this.categoryService.create({
-      name: this.name,
-      description: this.description
+      name: normalizedName,
+      description: normalizedDescription
     }).subscribe({
       next: () => {
         this.name = '';
@@ -78,9 +91,58 @@ export class CategoryListComponent implements OnInit {
         console.error('Erro ao criar categoria', error);
         this.notificationService.error(
           'Falha ao criar categoria',
-          error?.status === 403
-            ? 'Somente administradores podem cadastrar categorias.'
-            : 'Revise os dados informados e tente novamente.'
+          error?.error?.message || (
+            error?.status === 403
+              ? 'Somente administradores podem cadastrar categorias.'
+              : 'Revise os dados informados e tente novamente.'
+          )
+        );
+      }
+    });
+  }
+
+  deleteCategory(category: Category): void {
+    if (!this.isAdmin) {
+      this.notificationService.error(
+        'Acesso negado',
+        'Somente administradores podem excluir categorias.'
+      );
+      return;
+    }
+
+    this.pendingDeleteCategory = category;
+  }
+
+  cancelDeleteCategory(): void {
+    if (this.deletingCategory) {
+      return;
+    }
+    this.pendingDeleteCategory = null;
+  }
+
+  confirmDeleteCategory(): void {
+    if (!this.pendingDeleteCategory) {
+      return;
+    }
+
+    this.deletingCategory = true;
+
+    this.categoryService.delete(this.pendingDeleteCategory.id).subscribe({
+      next: () => {
+        this.deletingCategory = false;
+        this.pendingDeleteCategory = null;
+        this.notificationService.success(
+          'Categoria excluida',
+          'A categoria foi removida com sucesso.'
+        );
+        this.loadCategories();
+      },
+      error: (error) => {
+        this.deletingCategory = false;
+        console.error('Erro ao excluir categoria', error);
+        this.notificationService.error(
+          'Falha ao excluir categoria',
+          error?.error?.message || 'Nao foi possivel excluir a categoria selecionada.'
         );
       }
     });

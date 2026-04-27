@@ -38,8 +38,8 @@ public class TicketService {
 
         Ticket ticket = new Ticket();
         ticket.setProtocol(generateProtocol());
-        ticket.setTitle(request.title());
-        ticket.setDescription(request.description());
+        ticket.setTitle(request.title().trim());
+        ticket.setDescription(request.description().trim());
         ticket.setPriority(request.priority() != null ? request.priority() : TicketPriority.MEDIUM);
         ticket.setStatus(TicketStatus.OPEN);
         ticket.setCategory(category);

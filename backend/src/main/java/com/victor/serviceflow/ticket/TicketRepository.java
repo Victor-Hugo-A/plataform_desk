@@ -11,4 +11,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     long countByStatus(TicketStatus status);
 
     long countByPriority(TicketPriority priority);
+
+    boolean existsByCategoryId(Long categoryId);
 }

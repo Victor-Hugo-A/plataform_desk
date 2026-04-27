@@ -2,6 +2,7 @@ package com.victor.serviceflow.ticket;
 
 import com.victor.serviceflow.ticket.dto.TicketCreateRequest;
 import com.victor.serviceflow.ticket.dto.TicketResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class TicketController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TicketResponse create(@RequestBody TicketCreateRequest request) {
+    public TicketResponse create(@Valid @RequestBody TicketCreateRequest request) {
         return ticketService.create(request);
     }
 

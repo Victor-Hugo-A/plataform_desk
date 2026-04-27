@@ -4,6 +4,8 @@ import com.victor.serviceflow.category.dto.CategoryRequest;
 import com.victor.serviceflow.category.dto.CategoryResponse;
 import com.victor.serviceflow.exception.BusinessException;
 import com.victor.serviceflow.exception.ResourceNotFoundException;
+import com.victor.serviceflow.ticket.TicketRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,19 +14,24 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final TicketRepository ticketRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, TicketRepository ticketRepository) {
         this.categoryRepository = categoryRepository;
+        this.ticketRepository = ticketRepository;
     }
 
     public CategoryResponse create(CategoryRequest request) {
-        if (categoryRepository.existsByName(request.name())) {
-            throw new BusinessException("Já existe uma categoria cadastrada com esse nome.");
+        String normalizedName = request.name().trim();
+        String normalizedDescription = request.description() != null ? request.description().trim() : null;
+
+        if (categoryRepository.existsByNameIgnoreCase(normalizedName)) {
+            throw new BusinessException("JÃ¡ existe uma categoria cadastrada com esse nome.");
         }
 
         Category category = new Category();
-        category.setName(request.name());
-        category.setDescription(request.description());
+        category.setName(normalizedName);
+        category.setDescription(normalizedDescription == null || normalizedDescription.isBlank() ? null : normalizedDescription);
 
         Category savedCategory = categoryRepository.save(category);
 
@@ -40,9 +47,23 @@ public class CategoryService {
 
     public CategoryResponse findById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria nÃ£o encontrada."));
 
         return toResponse(category);
+    }
+
+    public void delete(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria nÃ£o encontrada."));
+
+        if (ticketRepository.existsByCategoryId(id)) {
+            throw new BusinessException(
+                    "Nao e possivel excluir uma categoria vinculada a chamados.",
+                    HttpStatus.CONFLICT
+            );
+        }
+
+        categoryRepository.delete(category);
     }
 
     private CategoryResponse toResponse(Category category) {

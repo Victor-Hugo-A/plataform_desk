@@ -3,7 +3,7 @@ spring:
     name: serviceflow
 
   datasource:
-    url: jdbc:h2:file:./data/serviceflow;MODE=MySQL
+    url: jdbc:h2:file:C:/Users/Victor H/IdeaProjects/plataform_desk/backend/data/serviceflow;MODE=MySQL
     username: sa
     password: ""
     driver-class-name: org.h2.Driver

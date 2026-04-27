@@ -29,4 +29,14 @@ export class CategoryService {
 
     return this.http.post<Category>(this.apiUrl, request, { headers });
   }
+
+  delete(id: number): Observable<void> {
+    const user = this.authService.getLoggedUser();
+    const headers = new HttpHeaders({
+      'X-User-Role': user?.role ?? '',
+      'X-User-Id': user?.id?.toString() ?? ''
+    });
+
+    return this.http.delete<void>(this.apiUrl + '/' + id, { headers });
+  }
 }

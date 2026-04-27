@@ -6,6 +6,30 @@
   </div>
 </section>
 
+@if (pendingDeleteCategory) {
+  <div class="modal-backdrop" (click)="cancelDeleteCategory()">
+    <section class="confirm-modal" (click)="$event.stopPropagation()">
+      <div class="confirm-badge">Excluir categoria</div>
+      <h3>{{ pendingDeleteCategory.name }}</h3>
+      <p>
+        Essa acao remove a categoria do cadastro. Se ela estiver vinculada a chamados, a exclusao sera bloqueada.
+      </p>
+
+      <div class="confirm-meta">
+        <span>{{ pendingDeleteCategory.description || 'Sem descricao informada.' }}</span>
+        <strong>{{ pendingDeleteCategory.active ? 'Categoria ativa' : 'Categoria inativa' }}</strong>
+      </div>
+
+      <div class="confirm-actions">
+        <button type="button" class="btn-ghost" (click)="cancelDeleteCategory()">Cancelar</button>
+        <button type="button" class="danger-button solid" (click)="confirmDeleteCategory()">
+          {{ deletingCategory ? 'Excluindo...' : 'Confirmar exclusao' }}
+        </button>
+      </div>
+    </section>
+  </div>
+}
+
 <section class="grid" [class.single-column]="!isAdmin">
   @if (isAdmin) {
   <article class="card form-card">
@@ -66,7 +90,12 @@
             <span>{{ category.description || 'Sem descricao informada.' }}</span>
           </div>
 
-          <span class="status">{{ category.active ? 'Ativa' : 'Inativa' }}</span>
+          <div class="item-actions">
+            <span class="status">{{ category.active ? 'Ativa' : 'Inativa' }}</span>
+            @if (isAdmin) {
+              <button type="button" class="danger-button" (click)="deleteCategory(category)">Excluir</button>
+            }
+          </div>
         </div>
       } @empty {
         @if (!loading) {

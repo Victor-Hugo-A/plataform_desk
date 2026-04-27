@@ -74,6 +74,25 @@ export class TicketFormComponent implements OnInit {
       return;
     }
 
+    const normalizedTitle = this.title.trim();
+    const normalizedDescription = this.description.trim();
+
+    if (!normalizedTitle) {
+      this.notificationService.error(
+        'Titulo obrigatorio',
+        'Informe o titulo do chamado antes de continuar.'
+      );
+      return;
+    }
+
+    if (!normalizedDescription) {
+      this.notificationService.error(
+        'Descricao obrigatoria',
+        'Descreva o chamado antes de continuar.'
+      );
+      return;
+    }
+
     if (!this.categoryId) {
       this.notificationService.error(
         'Categoria obrigatoria',
@@ -85,8 +104,8 @@ export class TicketFormComponent implements OnInit {
     this.saving = true;
 
     this.ticketService.create({
-      title: this.title,
-      description: this.description,
+      title: normalizedTitle,
+      description: normalizedDescription,
       priority: this.priority,
       categoryId: Number(this.categoryId),
       requesterId: this.currentUser.id
@@ -104,7 +123,7 @@ export class TicketFormComponent implements OnInit {
         console.error('Erro ao criar chamado', error);
         this.notificationService.error(
           'Falha ao criar chamado',
-          'Confira os dados informados e tente novamente.'
+          error?.error?.message || 'Confira os dados informados e tente novamente.'
         );
       }
     });
