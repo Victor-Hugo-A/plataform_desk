@@ -5,44 +5,77 @@
     </div>
 
     <div class="hero-overlay">
-      <span class="eyebrow">Service desk</span>
-      <h1>Atendimento técnico com visão clara e operação organizada.</h1>
-      <p>Abra, acompanhe e priorize chamados em um fluxo mais direto.</p>
+      <div class="hero-topline">
+        <span class="eyebrow">Service desk</span>
+      </div>
 
-      <div class="hero-stats">
-        <div>
-          <strong>Alertas claros</strong>
-          <span>Erros e sucessos destacados no topo direito.</span>
-        </div>
+      <div class="hero-copy">
+        <p class="hero-lead">Suporte mais claro e mais direto.</p>
+        <h1>Centralize chamados e prioridades em um painel unico.</h1>
+        <p class="hero-description">
+          Veja o que entrou, o que esta em risco e o que precisa de acao imediata sem perder contexto.
+        </p>
+      </div>
 
-        <div>
-          <strong>Operação centralizada</strong>
-          <span>Chamados, categorias e usuários no mesmo painel.</span>
-        </div>
+      <div class="hero-panels">
+        <article>
+          <strong>Prioridades visiveis</strong>
+          <span>Leitura rapida do que esta critico, em progresso e aguardando usuario.</span>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="login-card">
-    <div class="brand">
-      <strong>ServiceFlow</strong>
-      <span>Gestao de chamados tecnicos e SLA</span>
-    </div>
+  <section class="login-card-wrap">
+    <section class="login-card">
+      <div class="brand">
+        <span class="brand-mark">SF</span>
+        <div>
+          <strong>ServiceFlow</strong>
+          <span>Gestao de chamados tecnicos e SLA</span>
+        </div>
+      </div>
 
-    <form (ngSubmit)="login()">
-      <label>
-        E-mail
-        <input name="email" type="email" [(ngModel)]="email" placeholder="victor@email.com" required>
-      </label>
+      <div class="card-copy">
+        <span class="form-kicker">Acesso seguro</span>
+        <h2>Entrar no painel</h2>
+        <p>Use sua conta para acessar chamados, comentarios e prazos do atendimento.</p>
+      </div>
 
-      <label>
-        Senha
-        <input name="password" type="password" [(ngModel)]="password" placeholder="Digite sua senha" required>
-      </label>
+      <form (ngSubmit)="login()">
+        <label>
+          E-mail
+          <div class="input-shell">
+            <span class="input-icon">@</span>
+            <input name="email" type="email" [(ngModel)]="email" placeholder="voce@empresa.com" required>
+          </div>
+        </label>
 
-      <button type="submit" [disabled]="loading">
-        {{ loading ? 'Entrando...' : 'Entrar no sistema' }}
-      </button>
-    </form>
+        <label>
+          Senha
+          <div class="input-shell">
+            <span class="input-icon">#</span>
+            <input
+              name="password"
+              [type]="showPassword ? 'text' : 'password'"
+              [(ngModel)]="password"
+              placeholder="Digite sua senha"
+              required>
+            <button type="button" class="ghost-action" (click)="togglePassword()">
+              {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+            </button>
+          </div>
+        </label>
+
+        <div class="form-meta">
+          <span>Acesso restrito a usuarios cadastrados.</span>
+          <a href="" (click)="$event.preventDefault()">Esqueci minha senha</a>
+        </div>
+
+        <button type="submit" [disabled]="loading" class="submit-btn">
+          {{ loading ? 'Entrando...' : 'Entrar no sistema' }}
+        </button>
+      </form>
+    </section>
   </section>
 </main>

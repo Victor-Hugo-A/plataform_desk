@@ -14,6 +14,7 @@ export class LoginComponent {
   email = '';
   password = '';
   loading = false;
+  showPassword = false;
 
   constructor(
     private authService: AuthService,
@@ -41,5 +42,9 @@ export class LoginComponent {
         );
       }
     });
+  }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 }
